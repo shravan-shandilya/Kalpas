@@ -154,6 +154,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
             Cursor queryName = db.rawQuery(query,null);
             if(queryName.moveToFirst()) {
                 if (queryName.getCount() == 1) {
+                    result.add(queryName.getString(queryName.getColumnIndex("name")));
                     result.add(queryName.getString(queryName.getColumnIndex("ingredients")));
                     result.add(queryName.getString(queryName.getColumnIndex("karmas")));
                     result.add(queryName.getString(queryName.getColumnIndex("indications")));

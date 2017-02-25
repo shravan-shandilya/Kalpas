@@ -7,28 +7,95 @@
     android:fitsSystemWindows="true"
     tools:context="kalpas.shrvn.xyz.kalpas.Results">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/AppTheme.PopupOverlay"
-            app:title="Results" />
-
-    </android.support.design.widget.AppBarLayout>
-
     <include layout="@layout/content_results"
         android:id="@+id/include" />
 
-    <ListView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/lvResults" />
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Name"
+                android:id="@+id/lable_name"
+                android:gravity="center"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/field_name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ingredients"
+                android:id="@+id/lable_ingredients"
+                android:gravity="center"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/field_ingredients"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Karmas"
+                android:id="@+id/lable_karmas"
+                android:gravity="center"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/field_karmas"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Indications"
+                android:id="@+id/lable_indications"
+                android:gravity="center"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/field_indications"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Anupana"
+                android:id="@+id/lable_anupana"
+                android:gravity="center"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/field_anupana"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Adhikara"
+                android:id="@+id/lable_adhikara"
+                android:gravity="center"
+                android:textSize="35sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/field_adhikara"/>
+        </LinearLayout>
+
+
+    </ScrollView>
 
 
 </android.support.design.widget.CoordinatorLayout>
