@@ -13,16 +13,83 @@
     tools:context="kalpas.shrvn.xyz.kalpas.Search"
     tools:showIn="@layout/activity_search">
 
+    <TextView
+        android:id="@+id/seperator0"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kashayas"
+        android:textSize="25sp"
+        android:background="@android:color/holo_blue_light"
+        android:gravity="center"/>
+    <MultiAutoCompleteTextView
+        android:id="@+id/acKashaya"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Start typing"
+        android:gravity="center"
+        android:layout_below="@id/seperator0"/>
+    <Spinner
+        android:id="@+id/kashayas"
+        android:text="Kashayas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/acKashaya"/>
+    <!--
+    <TextView
+        android:id="@+id/seperator1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Indications"
+        android:textSize="25sp"
+        android:background="@android:color/holo_blue_light"
+        android:layout_below="@id/kashayas"
+        android:gravity="center"/>
+    <Spinner
+        android:id="@+id/indications"
+        android:text="Kashayas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/seperator1"/>
+    <TextView
+        android:id="@+id/seperator2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Karmas"
+        android:textSize="25sp"
+        android:background="@android:color/holo_blue_light"
+        android:layout_below="@id/indications"
+        android:gravity="center"/>
+    <Spinner
+        android:id="@+id/karmas"
+        android:text="Kashayas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/seperator2"/>
+    -->
+    <TextView
+        android:id="@+id/seperator3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Search"
+        android:textSize="25sp"
+        android:background="@android:color/holo_blue_light"
+        android:layout_below="@id/kashayas"
+        android:gravity="center"/>
+
     <RadioGroup
         android:id="@+id/rgSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        android:padding="15dp"
-        android:layout_above="@+id/spinner2"
+        android:layout_below="@id/seperator3"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
         android:checkedButton="@+id/rbIndication">
         <RadioButton
             android:id="@id/rbIndication"
@@ -37,40 +104,24 @@
             android:text="Karmas"
             android:paddingRight="50dp" />
     </RadioGroup>
+    <MultiAutoCompleteTextView
+        android:id="@+id/acSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Indications"
+        android:gravity="center"
+        android:layout_below="@id/rgSearch"/>
 
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/acSearch" />
     <Button
+        android:id="@+id/bSearch"
         android:text="Search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/bSearch"
-        android:layout_below="@+id/spinner2"
-        android:layout_centerHorizontal="true" />
-
-    <MultiAutoCompleteTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/multiAutoCompleteTextView"
-        android:hint="Indications"
-        android:gravity="center"
-        android:layout_marginTop="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner2"
-        android:layout_below="@+id/multiAutoCompleteTextView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <ListView
-        android:id="@+id/results"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/bSearch"
-        android:layout_centerHorizontal="true" />
-
-
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/spinner2"/>
 </RelativeLayout>

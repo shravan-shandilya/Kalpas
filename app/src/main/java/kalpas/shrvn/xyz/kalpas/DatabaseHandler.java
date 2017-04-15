@@ -113,7 +113,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
     }
 
     public ArrayList<String> queryIndication(String indication){
-        if(status){
+        if(status & indication != null){
             ArrayList<String> result = new ArrayList<String>();
             String query = "select * from "+TABLE+" where indications glob "+"'*_"+indication.toLowerCase()+"_*'";
             Cursor queryIndication = db.rawQuery(query,null);
@@ -129,7 +129,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
     }
 
     public ArrayList<String> queryKarma(String karma){
-        if(status){
+        if(status & karma != null){
             ArrayList<String> result = new ArrayList<String>();
             String query = "select * from "+TABLE+" where karmas glob "+"'*_"+karma.toLowerCase()+"_*'";
             Cursor queryKarma = db.rawQuery(query,null);
@@ -147,7 +147,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 
 
     public ArrayList<String> getFormulation(String formula){
-        if(status) {
+        if(status & formula != null) {
             ArrayList<String> result = new ArrayList<String>();
             String query = "select * from " + TABLE + " where name = '" + formula.toLowerCase() +"'";
             System.out.println("Query:  "+ query);
@@ -163,6 +163,31 @@ public class DatabaseHandler extends SQLiteAssetHelper {
                 }
             }
             queryName.close();
+            return result;
+        }
+        return null;
+    }
+
+    public ArrayList<String> queryItem(String type,String item){
+        if(type.equalsIgnoreCase("indications")) {
+            return queryIndication(item);
+        }else if(type.equalsIgnoreCase("karmas")){
+            return queryKarma(item);
+        }else
+            return null;
+    }
+
+    public ArrayList<String> getKashayas(){
+        if(status){
+            ArrayList<String> result = new ArrayList<String>();
+            String query = "select * from "+TABLE;
+            Cursor queryKashayas = db.rawQuery(query,null);
+            if(queryKashayas.moveToFirst()) {
+                do {
+                    result.add(queryKashayas.getString(queryKashayas.getColumnIndex("name")));
+                } while (queryKashayas.moveToNext());
+            }
+            queryKashayas.close();
             return result;
         }
         return null;

@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -23,11 +23,11 @@ import java.util.List;
 
 
 public class Search extends AppCompatActivity {
-    private MultiAutoCompleteTextView acSearch;
-    private Spinner spiSearch;
+
+    private Spinner spiKashayas,spiSearch;
+    private MultiAutoCompleteTextView acKashaya,acSearch;
     private Button bSearch;
     private Toolbar toolbar;
-    private ListView lvResults;
     private RadioGroup rgOptions;
 
     private DatabaseHandler dbHandler;
@@ -36,6 +36,7 @@ public class Search extends AppCompatActivity {
     private boolean indicationSelected = true;
     private boolean karmaSelected = false;
     private boolean spinnerRefreshed = false;
+    private boolean spinnerKashayaTouched = false;
 
     private ArrayAdapter acAdapter = null;
     private ArrayAdapter spiAdapter = null;
@@ -44,9 +45,7 @@ public class Search extends AppCompatActivity {
     List<String> indicationsSpinner = null;
     List<String> karmas = null;
     List<String> karmasSpinner = null;
-    List<String> result = null;
-
-    ArrayAdapter resultsAdapter = null;
+    List<String> kashayas = null;
 
 
     @Override
@@ -57,30 +56,67 @@ public class Search extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Linking widgets
+        spiKashayas = (Spinner) findViewById(R.id.kashayas);
+        //spiIndications = (Spinner) findViewById(R.id.indications);
+        //spiKarmas = (Spinner) findViewById(R.id.karmas);
         rgOptions = (RadioGroup)findViewById(R.id.rgSearch);
-        acSearch = (MultiAutoCompleteTextView) findViewById(R.id.multiAutoCompleteTextView);
+        acKashaya = (MultiAutoCompleteTextView) findViewById(R.id.acKashaya);
+        acSearch = (MultiAutoCompleteTextView) findViewById(R.id.acSearch);
         spiSearch = (Spinner) findViewById(R.id.spinner2);
         bSearch = (Button) findViewById(R.id.bSearch);
-        lvResults = (ListView) findViewById(R.id.results);
-        lvResults.setVisibility(View.GONE);
 
 
         //DB read
         dbHandler = new DatabaseHandler(this);
         indications = dbHandler.getIndications();
         karmas = dbHandler.getKarmas();
+        kashayas = new ArrayList<>();
+        kashayas.add(0,"Select");
+        kashayas.addAll(dbHandler.getKashayas());
 
 
-
-        if(dbHandler.status & (indications != null) & (karmas != null)) {
+        if(dbHandler.status & (indications != null) & (karmas != null) & (kashayas != null)) {
             //Adapter things for Spinner and Autocomplete
+            spiKashayas.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,kashayas));
             acAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new ArrayList<>(getItemsForAutoComplete()));
             spiAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,getItemsForSpinner());
 
             acSearch.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
             acSearch.setAdapter(acAdapter);
+            acKashaya.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+            acKashaya.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>(kashayas)));
             spiSearch.setAdapter(spiAdapter);
 
+            acKashaya.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    //Toast.makeText(getApplicationContext(),"You selected:"+parent.getAdapter().getItem(position),Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), Results.class);
+                    intent.putExtra("formulation", parent.getAdapter().getItem(position).toString());
+                    startActivity(intent);
+                }
+            });
+
+            spiKashayas.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    spinnerKashayaTouched = true;
+                    return false;
+                }
+            });
+            spiKashayas.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    if(!spinnerKashayaTouched | position == 0)return;
+                    Intent intent = new Intent(getApplicationContext(), Results.class);
+                    intent.putExtra("formulation", kashayas.get(position));
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
             //ActionListener for Spinner
             spiSearch.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -114,18 +150,10 @@ public class Search extends AppCompatActivity {
                     //TODO: Sanitize query_item
                     String query_item = acSearch.getText().toString();
                     query_item = query_item.split(",")[0].toLowerCase().replace(" ", "");
-                    result = queryItem(query_item);
-
-                    //First Search
-                    if (lvResults.getAdapter() == null) {
-                        resultsAdapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.result_row, result);
-                        lvResults.setAdapter(resultsAdapter);
-                        lvResults.setVisibility(View.VISIBLE);
-                    } else {
-                        resultsAdapter.clear();
-                        resultsAdapter.addAll(result);
-                        resultsAdapter.notifyDataSetChanged();
-                    }
+                    Intent intent = new Intent(getApplicationContext(),Intermediate.class);
+                    intent.putExtra("query_type", (indicationSelected)?"indications":"karmas");
+                    intent.putExtra("query_string",query_item);
+                    startActivity(intent);
                 }
             });
 
@@ -158,30 +186,13 @@ public class Search extends AppCompatActivity {
                     }else{
                         //Do nothing
                     }
-
                     spinnerRefreshed = true;
-
                     runOnUiThread(run);
                 }
             });
-
-
-            lvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if(result != null) {
-                        Intent intent = new Intent(getApplicationContext(),Results.class);
-                        intent.putExtra("formulation", dbHandler.getFormulation(result.get(position)));
-                        startActivity(intent);
-                    }
-                }
-            });
-
-
         }else{
             //DB read failure, try to recover(download latest db from remote) and restart
         }
-
     }
 
     @Override
@@ -234,15 +245,6 @@ public class Search extends AppCompatActivity {
             return indicationsSpinner.get(position);
         }else if(!indicationSelected & karmaSelected){
             return karmasSpinner.get(position);
-        }else
-            return null;
-    }
-
-    private ArrayList<String> queryItem(String item){
-        if(indicationSelected & !karmaSelected) {
-            return dbHandler.queryIndication(item);
-        }else if(!indicationSelected & karmaSelected){
-            return dbHandler.queryKarma(item);
         }else
             return null;
     }
