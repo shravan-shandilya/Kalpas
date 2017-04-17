@@ -47,6 +47,12 @@ public class Search extends AppCompatActivity {
     List<String> karmasSpinner = null;
     List<String> kashayas = null;
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        acKashaya.setText("");
+        spiKashayas.setSelection(0,false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +131,11 @@ public class Search extends AppCompatActivity {
                         spinnerRefreshed = false;
                         position = 0;
                     }else if(!indicationsSpinner.get(position).equals("Select")) {
-                        acSearch.setText(acSearch.getText() + getItemAtPosition(position) + ", ");
+                        //acSearch.setText(acSearch.getText() + getItemAtPosition(position) + ", ");
+                        Intent intent = new Intent(getApplicationContext(),Intermediate.class);
+                        intent.putExtra("query_type", (indicationSelected)?"indications":"karmas");
+                        intent.putExtra("query_string",parent.getAdapter().getItem(position).toString());
+                        startActivity(intent);
                     }else{
                         //do nothing
                     }
@@ -153,6 +163,20 @@ public class Search extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(),Intermediate.class);
                     intent.putExtra("query_type", (indicationSelected)?"indications":"karmas");
                     intent.putExtra("query_string",query_item);
+                    startActivity(intent);
+                }
+            });
+
+            acSearch.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(acSearch.getWindowToken(), 0);
+
+
+                    Intent intent = new Intent(getApplicationContext(),Intermediate.class);
+                    intent.putExtra("query_type", (indicationSelected)?"indications":"karmas");
+                    intent.putExtra("query_string",parent.getAdapter().getItem(position).toString());
                     startActivity(intent);
                 }
             });

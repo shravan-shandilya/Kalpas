@@ -38,12 +38,15 @@ public class Intermediate extends AppCompatActivity {
         //Set title
         SpannableString title=  new SpannableString(Character.toUpperCase(query_type.charAt(0)) + query_type.substring(1)+"  ("+Character.toUpperCase(query_string.charAt(0)) + query_string.substring(1)+")");
         title.setSpan(new RelativeSizeSpan(2f), 0,query_type.length(), 0); // set size
-        title.setSpan(new ForegroundColorSpan(Color.MAGENTA), 0, query_type.length(), 0);// set color
+        title.setSpan(new ForegroundColorSpan(Color.BLUE), 0, query_type.length(), 0);// set color
         tv_title.setText(title);
 
         //Query DB
         dbHandler = new DatabaseHandler(getApplicationContext());
         results = dbHandler.queryItem(query_type,query_string);
+        for (int index =0 ;index <results.size();index++) {
+            results.set(index,capitalize(results.get(index)));
+        }
 
         //Show
         if(results != null) {
@@ -55,7 +58,7 @@ public class Intermediate extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     if (results != null) {
                         Intent intent = new Intent(getApplicationContext(), Results.class);
-                        intent.putExtra("formulation", results.get(position));
+                        intent.putExtra("formulation", results.get(position).toLowerCase());
                         startActivity(intent);
                     }
                 }
@@ -67,5 +70,9 @@ public class Intermediate extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
+    }
+
+    private String capitalize(String str){
+        return Character.toUpperCase(str.charAt(0))+str.substring(1);
     }
 }

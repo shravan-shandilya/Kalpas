@@ -26,7 +26,7 @@
                 android:text="Name"
                 android:id="@+id/lable_name"
                 android:gravity="center"
-                android:textSize="35sp"/>
+                android:textSize="25sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
                 android:text="Ingredients"
                 android:id="@+id/lable_ingredients"
                 android:gravity="center"
-                android:textSize="35sp"/>
+                android:textSize="25sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
                 android:text="Karmas"
                 android:id="@+id/lable_karmas"
                 android:gravity="center"
-                android:textSize="35sp"/>
+                android:textSize="25sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
                 android:text="Indications"
                 android:id="@+id/lable_indications"
                 android:gravity="center"
-                android:textSize="35sp"/>
+                android:textSize="25sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
                 android:text="Anupana"
                 android:id="@+id/lable_anupana"
                 android:gravity="center"
-                android:textSize="35sp"/>
+                android:textSize="25sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -86,7 +86,7 @@
                 android:text="Adhikara"
                 android:id="@+id/lable_adhikara"
                 android:gravity="center"
-                android:textSize="35sp"/>
+                android:textSize="25sp"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
