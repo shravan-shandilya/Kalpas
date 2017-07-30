@@ -3,8 +3,10 @@ package kalpas.shrvn.xyz.kalpas;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -29,6 +32,7 @@ public class Search extends AppCompatActivity {
     private Button bSearch;
     private Toolbar toolbar;
     private RadioGroup rgOptions;
+    private ImageButton ibInfo;
 
     private DatabaseHandler dbHandler;
     private Runnable run;
@@ -46,6 +50,7 @@ public class Search extends AppCompatActivity {
     List<String> karmas = null;
     List<String> karmasSpinner = null;
     List<String> kashayas = null;
+    String[] formualtions_dropdown =  {"List of formulations","Asava & Arishta", "Kashaya","Churna","Vati/Gutika/Rasa/Guggulu","Ghruta","Taila","Leha","Bhasma"};;
 
     @Override
     public void onResume(){
@@ -61,6 +66,7 @@ public class Search extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         //Linking widgets
         spiKashayas = (Spinner) findViewById(R.id.kashayas);
         //spiIndications = (Spinner) findViewById(R.id.indications);
@@ -70,6 +76,25 @@ public class Search extends AppCompatActivity {
         acSearch = (MultiAutoCompleteTextView) findViewById(R.id.acSearch);
         spiSearch = (Spinner) findViewById(R.id.spinner2);
         bSearch = (Button) findViewById(R.id.bSearch);
+        ibInfo = (ImageButton) findViewById(R.id.ibInfo);
+
+        ibInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater factory = LayoutInflater.from(getApplicationContext());
+                final View aboutDialogView = factory.inflate(R.layout.info, null);
+                final AlertDialog aboutDialog = new AlertDialog.Builder(Search.this).create();
+                aboutDialog.setView(aboutDialogView);
+                aboutDialogView.findViewById(R.id.ok).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        aboutDialog.dismiss();
+                    }
+                });
+                aboutDialog.show();
+            }
+        });
+
 
 
         //DB read
@@ -77,20 +102,21 @@ public class Search extends AppCompatActivity {
         indications = dbHandler.getIndications();
         karmas = dbHandler.getKarmas();
         kashayas = new ArrayList<>();
-        kashayas.add(0,"Select");
+        kashayas.add(0,"List of Yogas/Formulations");
         kashayas.addAll(dbHandler.getKashayas());
 
 
         if(dbHandler.status & (indications != null) & (karmas != null) & (kashayas != null)) {
             //Adapter things for Spinner and Autocomplete
-            spiKashayas.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,kashayas));
-            acAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new ArrayList<>(getItemsForAutoComplete()));
-            spiAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line,getItemsForSpinner());
+            //spiKashayas.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,kashayas));
+            spiKashayas.setAdapter(new ArrayAdapter<String>(this,R.layout.result_row,formualtions_dropdown));
+            acAdapter = new ArrayAdapter<String>(this, R.layout.result_row, new ArrayList<>(getItemsForAutoComplete()));
+            spiAdapter = new ArrayAdapter<String>(this, R.layout.result_row,getItemsForSpinner());
 
             acSearch.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
             acSearch.setAdapter(acAdapter);
             acKashaya.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-            acKashaya.setAdapter(new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,new ArrayList<String>(kashayas)));
+            acKashaya.setAdapter(new ArrayAdapter<String>(this,R.layout.result_row,new ArrayList<String>(kashayas)));
             spiSearch.setAdapter(spiAdapter);
 
             acKashaya.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,8 +140,8 @@ public class Search extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if(!spinnerKashayaTouched | position == 0)return;
-                    Intent intent = new Intent(getApplicationContext(), Results.class);
-                    intent.putExtra("formulation", kashayas.get(position));
+                    Intent intent = new Intent(getApplicationContext(), FormulationResult.class);
+                    intent.putExtra("formulation", formualtions_dropdown[position]);
                     startActivity(intent);
                 }
 
@@ -130,7 +156,7 @@ public class Search extends AppCompatActivity {
                     if(spinnerRefreshed){
                         spinnerRefreshed = false;
                         position = 0;
-                    }else if(!indicationsSpinner.get(position).equals("Select")) {
+                    }else if(!indicationsSpinner.get(position).equals("List of Indications") & !indicationsSpinner.get(position).equals("List of Karmas")) {
                         //acSearch.setText(acSearch.getText() + getItemAtPosition(position) + ", ");
                         Intent intent = new Intent(getApplicationContext(),Intermediate.class);
                         intent.putExtra("query_type", (indicationSelected)?"indications":"karmas");
@@ -252,12 +278,12 @@ public class Search extends AppCompatActivity {
     private List<String> getItemsForSpinner(){
         if(indicationSelected & !karmaSelected) {
             indicationsSpinner = new ArrayList<String>();
-            indicationsSpinner.add(0, "Select");
+            indicationsSpinner.add(0, "List of Indications");
             indicationsSpinner.addAll(1, indications);
             return indicationsSpinner;
         }else if(!indicationSelected & karmaSelected){
             karmasSpinner = new ArrayList<String>();
-            karmasSpinner.add(0, "Select");
+            karmasSpinner.add(0, "List of Karmas");
             karmasSpinner.addAll(1, karmas);
             return karmasSpinner;
         }else

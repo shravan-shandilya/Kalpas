@@ -2,7 +2,6 @@ package kalpas.shrvn.xyz.kalpas;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ public class Results extends AppCompatActivity {
 
     private ArrayList<String> results = null;
     private DatabaseHandler dbHandler;
-    private FloatingActionButton fabShare;
 
     private TextView[] fields = new TextView[6];
     private TextView[] lables = new TextView[6];
@@ -24,7 +22,6 @@ public class Results extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_results);
 
-        fabShare = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
         String formulation = (String) getIntent().getSerializableExtra("formulation");
 
         dbHandler = new DatabaseHandler(this);
@@ -59,12 +56,7 @@ public class Results extends AppCompatActivity {
             }
         }
 
-        fabShare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getApplicationContext(),"pressed",Toast.LENGTH_SHORT).show();
-            }
-        });
+
     }
 
     @Override
@@ -92,4 +84,10 @@ public class Results extends AppCompatActivity {
         return Character.toUpperCase(str.charAt(0))+str.substring(1);
     }
 
+    public void share(View view){
+        Toast.makeText(getApplicationContext(),"Pressed",Toast.LENGTH_SHORT).show();
+    }
+
 }
+
+

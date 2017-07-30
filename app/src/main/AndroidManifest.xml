@@ -29,6 +29,10 @@
             android:name=".Intermediate"
             android:label="@string/title_activity_intermediate"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".FormulationResult"
+            android:label="@string/title_activity_intermediate"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

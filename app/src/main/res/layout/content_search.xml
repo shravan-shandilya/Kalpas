@@ -13,6 +13,8 @@
     tools:context="kalpas.shrvn.xyz.kalpas.Search"
     tools:showIn="@layout/activity_search">
 
+
+<!--
     <TextView
         android:id="@+id/seperator0"
         android:layout_width="match_parent"
@@ -20,22 +22,46 @@
         android:text="Kashayas"
         android:textSize="25sp"
         android:background="@android:color/holo_blue_light"
+        android:gravity="center"/> -->
+
+    <Spinner
+        android:id="@+id/kashayas"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp"
+        android:background="@android:color/holo_blue_light"
+        android:layout_gravity="center"/>
+
+    <Space
+        android:id="@+id/space1"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/kashayas"/>
+
+    <TextView
+        android:id="@+id/seperator1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Search a Yoga (by name)"
+        android:textSize="25sp"
+        android:textColor="#FFFFFF"
+        android:background="#1F65AB"
+        android:layout_below="@id/space1"
         android:gravity="center"/>
+
     <MultiAutoCompleteTextView
         android:id="@+id/acKashaya"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:hint="Start typing"
+        android:textColorHint="#C0BABA"
         android:gravity="center"
-        android:layout_below="@id/seperator0"/>
-    <Spinner
-        android:id="@+id/kashayas"
-        android:text="Kashayas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@id/acKashaya"/>
+        android:background="#1F65AB"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/seperator1"/>
     <!--
     <TextView
         android:id="@+id/seperator1"
@@ -72,23 +98,37 @@
         android:layout_alignParentStart="true"
         android:layout_below="@id/seperator2"/>
     -->
+
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/acKashaya"/>
+
     <TextView
         android:id="@+id/seperator3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:text="Search"
         android:textSize="25sp"
-        android:background="@android:color/holo_blue_light"
-        android:layout_below="@id/kashayas"
+        android:background="#EE5925"
+        android:layout_below="@id/space2"
         android:gravity="center"/>
+
+    <Space
+        android:id="@+id/space3"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/seperator3"/>
 
     <RadioGroup
         android:id="@+id/rgSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:layout_below="@id/seperator3"
+        android:orientation="vertical"
+        android:layout_below="@id/space3"
         android:layout_centerHorizontal="true"
         android:checkedButton="@+id/rbIndication">
         <RadioButton
@@ -96,20 +136,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Indications"
+            android:textSize="20dp"
             android:paddingRight="50dp" />
         <RadioButton
             android:id="@+id/rbKarma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Karmas"
+            android:textSize="20dp"
             android:paddingRight="50dp" />
     </RadioGroup>
+
+
     <MultiAutoCompleteTextView
         android:id="@+id/acSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Indications"
         android:gravity="center"
+        android:textSize="20dp"
         android:layout_below="@id/rgSearch"/>
 
     <Spinner
@@ -120,8 +165,19 @@
     <Button
         android:id="@+id/bSearch"
         android:text="Search"
+        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/spinner2"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@android:drawable/ic_menu_info_details"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ibInfo" />
+
+
 </RelativeLayout>

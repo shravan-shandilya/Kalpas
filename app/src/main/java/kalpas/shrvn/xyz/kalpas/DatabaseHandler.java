@@ -4,14 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -54,7 +47,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
 
         //Check if the local DB is of latest version.
         //Fetch the latest version
-        RequestQueue queue = Volley.newRequestQueue(thisContext);
+/*        RequestQueue queue = Volley.newRequestQueue(thisContext);
         StringRequest versionRequest = new StringRequest(Request.Method.GET, REMOTE_DB_API,
                 new Response.Listener<String>() {
                     @Override
@@ -68,6 +61,7 @@ public class DatabaseHandler extends SQLiteAssetHelper {
             }
         });
         queue.add(versionRequest);
+*/
         return db != null;
     }
 
@@ -188,6 +182,22 @@ public class DatabaseHandler extends SQLiteAssetHelper {
                 } while (queryKashayas.moveToNext());
             }
             queryKashayas.close();
+            return result;
+        }
+        return null;
+    }
+
+    public ArrayList<String> queryAllByType(String type){
+        if(status){
+            ArrayList<String> result = new ArrayList<String>();
+            String query = "select * from "+TABLE+" where name glob"+"'*"+type.toLowerCase()+"'";
+            Cursor queryAll= db.rawQuery(query,null);
+            if(queryAll.moveToFirst()) {
+                do {
+                    result.add(queryAll.getString(queryAll.getColumnIndex("name")));
+                } while (queryAll.moveToNext());
+            }
+            queryAll.close();
             return result;
         }
         return null;

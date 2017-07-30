@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/row"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:textSize="20sp"
-    android:textColor="#C45E61"
-    android:gravity="center"/>
+    android:textSize="25dp"
+    android:gravity="center"
+    android:background="#c0baba"
+    android:textColor="#000000"/>
 
